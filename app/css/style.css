@@ -22,16 +22,14 @@
 body {
   font-family: "Poppins", sans-serif;
   background: #fffffe;
-  color: #5f6c7b;
+  color: #094067;
 }
 
-h1 {
-  font-size: 2rem;
-}
-
+h4,
+h5,
+h6,
 p {
-  margin-top: 1rem;
-  font-size: 0.8rem;
+  color: #5f6c7b;
 }
 
 #window-title {
@@ -41,4 +39,31 @@ p {
 .icon-dot {
   font-size: 19px;
   color: #ef4565;
+}
+
+.current {
+  margin-top: 5px;
+}
+
+canvas {
+  margin: 0 auto;
+  margin-top: 30px;
+}
+
+.btn {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background-color: #3da9fc;
+  border: none;
+  color: #fffffe;
+  height: 45px;
+  width: 45px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.btn:hover {
+  background-color: #29a2ff;
 }

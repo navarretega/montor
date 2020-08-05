@@ -6,12 +6,12 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 500,
     height: 600,
-    minWidth: 400,
-    minHeight: 500,
     frame: false,
+    resizable: false,
     // icon: `${__dirname}/app/assets/icon2.png`,
     webPreferences: {
       nodeIntegration: true,
+      enableRemoteModule: true,
     },
   });
 

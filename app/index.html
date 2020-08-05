@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline'" />
+    <link rel="stylesheet" href="css/all.min.css" />
     <link rel="stylesheet" href="css/simplebar.css" />
     <link rel="stylesheet" href="css/titlebar.css" />
     <link rel="stylesheet" href="css/style.css" />
@@ -30,23 +31,6 @@
                 assets/min-k-24.png 2.5x,
                 assets/min-k-30.png 3x,
                 assets/min-k-30.png 3.5x
-              "
-              draggable="false"
-            />
-          </div>
-          <div class="tb-button" id="tb-max-button">
-            <img
-              class="tb-icon"
-              srcset="
-                assets/max-k-10.png 1x,
-                assets/max-k-12.png 1.25x,
-                assets/max-k-15.png 1.5x,
-                assets/max-k-15.png 1.75x,
-                assets/max-k-20.png 2x,
-                assets/max-k-20.png 2.25x,
-                assets/max-k-24.png 2.5x,
-                assets/max-k-30.png 3x,
-                assets/max-k-30.png 3.5x
               "
               draggable="false"
             />
@@ -90,9 +74,15 @@
     </header>
     <!-- Titlebar -->
 
-    <div id="main"></div>
+    <div id="main">
+      <h3 class="today">Tuesday, August 4, 2020</h3>
+      <h5 class="current">You've been active for 7 hours and 40 minutes.</h5>
+      <canvas id="active-chart" width="390" height="390"></canvas>
+      <button class="btn"><i class="fas fa-calendar-alt"></i></button>
+    </div>
 
     <script src="js/simplebar.min.js"></script>
     <script src="js/titlebar.js"></script>
+    <script src="js/renderer.js"></script>
   </body>
 </html>

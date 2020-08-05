@@ -17,29 +17,9 @@ function handleWindowControls() {
     win.minimize();
   });
 
-  document.getElementById("tb-max-button").addEventListener("click", (event) => {
-    win.maximize();
-  });
-
-  document.getElementById("tb-restore-button").addEventListener("click", (event) => {
-    win.unmaximize();
-  });
-
   document.getElementById("tb-close-button").addEventListener("click", (event) => {
     win.close();
   });
-
-  toggleMaxRestoreButtons();
-  win.on("maximize", toggleMaxRestoreButtons);
-  win.on("unmaximize", toggleMaxRestoreButtons);
-
-  function toggleMaxRestoreButtons() {
-    if (win.isMaximized()) {
-      document.body.classList.add("tb-maximized");
-    } else {
-      document.body.classList.remove("tb-maximized");
-    }
-  }
 }
 
 // Custom Scrollbar
