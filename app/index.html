@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'" />
+    <link rel="stylesheet" href="css/simplebar.css" />
+    <link rel="stylesheet" href="css/titlebar.css" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!-- Titlebar -->
+    <header id="tb-titlebar">
+      <div id="tb-drag-region">
+        <div id="tb-window-title">
+          <span>montor<span class="icon-dot">.</span></span>
+        </div>
+
+        <div id="tb-window-controls">
+          <div class="tb-button" id="tb-min-button">
+            <img
+              class="tb-icon"
+              srcset="
+                assets/min-k-10.png 1x,
+                assets/min-k-12.png 1.25x,
+                assets/min-k-15.png 1.5x,
+                assets/min-k-15.png 1.75x,
+                assets/min-k-20.png 2x,
+                assets/min-k-20.png 2.25x,
+                assets/min-k-24.png 2.5x,
+                assets/min-k-30.png 3x,
+                assets/min-k-30.png 3.5x
+              "
+              draggable="false"
+            />
+          </div>
+          <div class="tb-button" id="tb-max-button">
+            <img
+              class="tb-icon"
+              srcset="
+                assets/max-k-10.png 1x,
+                assets/max-k-12.png 1.25x,
+                assets/max-k-15.png 1.5x,
+                assets/max-k-15.png 1.75x,
+                assets/max-k-20.png 2x,
+                assets/max-k-20.png 2.25x,
+                assets/max-k-24.png 2.5x,
+                assets/max-k-30.png 3x,
+                assets/max-k-30.png 3.5x
+              "
+              draggable="false"
+            />
+          </div>
+          <div class="tb-button" id="tb-restore-button">
+            <img
+              class="tb-icon"
+              srcset="
+                assets/restore-k-10.png 1x,
+                assets/restore-k-12.png 1.25x,
+                assets/restore-k-15.png 1.5x,
+                assets/restore-k-15.png 1.75x,
+                assets/restore-k-20.png 2x,
+                assets/restore-k-20.png 2.25x,
+                assets/restore-k-24.png 2.5x,
+                assets/restore-k-30.png 3x,
+                assets/restore-k-30.png 3.5x
+              "
+              draggable="false"
+            />
+          </div>
+          <div class="tb-button" id="tb-close-button">
+            <img
+              class="tb-icon"
+              srcset="
+                assets/close-k-10.png 1x,
+                assets/close-k-12.png 1.25x,
+                assets/close-k-15.png 1.5x,
+                assets/close-k-15.png 1.75x,
+                assets/close-k-20.png 2x,
+                assets/close-k-20.png 2.25x,
+                assets/close-k-24.png 2.5x,
+                assets/close-k-30.png 3x,
+                assets/close-k-30.png 3.5x
+              "
+              draggable="false"
+            />
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- Titlebar -->
+
+    <div id="main"></div>
+
+    <script src="js/simplebar.min.js"></script>
+    <script src="js/titlebar.js"></script>
+  </body>
+</html>

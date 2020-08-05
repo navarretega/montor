@@ -1,0 +1,135 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+  border: 3px solid #094067;
+  overflow-y: hidden;
+}
+
+#tb-titlebar {
+  display: block;
+  position: fixed;
+  height: 32px;
+  width: calc(100% - 2px);
+  padding: 4px;
+}
+
+#tb-titlebar #tb-drag-region {
+  width: 100%;
+  height: 100%;
+  -webkit-app-region: drag;
+  display: grid;
+  grid-template-columns: auto 138px;
+}
+
+.tb-maximized #tb-titlebar {
+  width: 100%;
+  padding: 0;
+}
+
+#main {
+  height: calc(100% - 32px);
+  margin-top: 32px;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+#tb-window-title {
+  grid-column: 1;
+  display: flex;
+  align-items: center;
+  margin-left: 8px;
+  overflow: hidden;
+  font-size: 12px;
+}
+
+#tb-window-title span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.5;
+}
+
+.tb-maximized #tb-window-title {
+  margin-left: 12px;
+}
+
+#tb-window-controls {
+  display: grid;
+  grid-template-columns: repeat(3, 46px);
+  position: absolute;
+  top: 0;
+  right: 4px;
+  height: 100%;
+  -webkit-app-region: no-drag;
+}
+
+#tb-window-controls .tb-button {
+  grid-row: 1 / span 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+}
+
+#tb-window-controls .tb-button:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+#tb-window-controls .tb-button:active {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+#tb-close-button:hover {
+  background: #e43342 !important;
+  border-right: none;
+}
+
+#tb-close-button:active {
+  background: #f1707a !important;
+}
+
+#tb-close-button:active .tb-icon {
+  filter: invert(1);
+}
+
+#tb-min-button {
+  grid-column: 1;
+}
+
+#tb-max-button,
+#tb-restore-button {
+  grid-column: 2;
+}
+
+#tb-close-button {
+  grid-column: 3;
+}
+
+#tb-restore-button {
+  display: none !important;
+}
+
+.tb-maximized #tb-restore-button {
+  display: flex !important;
+}
+
+.tb-maximized #tb-max-button {
+  display: none;
+}
+
+@media (-webkit-device-pixel-ratio: 1.5),
+  (device-pixel-ratio: 1.5),
+  (-webkit-device-pixel-ratio: 2),
+  (device-pixel-ratio: 2),
+  (-webkit-device-pixel-ratio: 3),
+  (device-pixel-ratio: 3) {
+  #tb-window-controls .tb-icon {
+    width: 10px;
+    height: 10px;
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "montor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "nodemon --exec electron .",
+    "dist": "electron-builder"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^9.1.2",
+    "electron-builder": "^22.8.0",
+    "nodemon": "^2.0.4"
+  },
+  "build": {
+    "appId": "brisai.driync"
+  }
+}
