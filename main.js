@@ -8,7 +8,7 @@ function createWindow() {
     height: 600,
     frame: false,
     resizable: false,
-    // icon: `${__dirname}/app/assets/icon2.png`,
+    icon: `${__dirname}/app/assets/logo.png`,
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,

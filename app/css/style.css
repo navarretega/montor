@@ -64,6 +64,33 @@ canvas {
   border-radius: 50%;
 }
 
+.back-btn {
+  font-size: 16px;
+  color: #3da9fc;
+  cursor: pointer;
+}
+
 .btn:hover {
   background-color: #29a2ff;
+}
+
+.s2-title {
+  margin-top: 10px;
+}
+
+.tabcontent {
+  animation: fadeEffect 0.6s;
+}
+
+.tabcontent:not(.active) {
+  display: none;
+}
+
+@keyframes fadeEffect {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
