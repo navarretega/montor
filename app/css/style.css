@@ -32,6 +32,10 @@ p {
   color: #5f6c7b;
 }
 
+h3 {
+  font-size: 22px;
+}
+
 #window-title {
   font-size: 16px;
 }
@@ -93,4 +97,32 @@ canvas {
   to {
     opacity: 1;
   }
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+  margin-top: 20px;
+}
+
+.box {
+  height: 100px;
+  background-color: #d8eefe;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.box-title {
+  font-size: 14px;
+  color: #094067;
+}
+
+.box-subtitle {
+  font-family: "Poppins Medium", sans-serif;
+  font-size: 16px;
+  color: #5f6c7b;
 }
