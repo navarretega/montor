@@ -1,6 +1,18 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, powerMonitor } = require("electron");
 
 let mainWindow;
+
+// PowerMonitor Events
+function powerEvents() {
+  powerMonitor.on("lock-screen", () => {
+    console.log("The system is about to lock the screen");
+    win.webContents.send("isActive", false);
+  });
+  powerMonitor.on("unlock-screen", () => {
+    console.log("The systems screen is unlocked");
+    win.webContents.send("isActive", true);
+  });
+}
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -22,7 +34,10 @@ function createWindow() {
   });
 }
 
-app.on("ready", createWindow);
+app.on("ready", () => {
+  createWindow();
+  powerEvents();
+});
 
 app.on("window-all-closed", function () {
   if (process.platform !== "darwin") {
