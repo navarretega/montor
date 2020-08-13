@@ -1,16 +1,19 @@
-const Chart = require("chart.js");
+const electron = require("electron");
 const { ipcRenderer } = require("electron");
+const path = require("path");
+const moment = require("moment");
+const fs = require("fs");
+const Chart = require("chart.js");
 
-// Variables //
 const section1 = document.getElementById("section1");
 const section1Btn = document.getElementById("section1-btn");
 const section2 = document.getElementById("section2");
 const section2Btn = document.getElementById("section2-btn");
-const ctx = document.getElementById("active-chart");
-const stopWatchEle = document.getElementById("stopwatch");
+const todayEle = document.getElementById("today");
 const hoursEle = document.getElementById("hours");
 const minutesEle = document.getElementById("minutes");
-// Variables //
+const boxesEle = document.getElementById("boxes");
+const ctx = document.getElementById("active-chart");
 
 // Tabs //
 function onClickS1() {
@@ -25,78 +28,80 @@ function onClickS2() {
 
 section1Btn.addEventListener("click", onClickS1);
 section2Btn.addEventListener("click", onClickS2);
-// Tabs //
 
-// Stopwatch //
-let seconds = 0;
+// Construct file path | All the datetimes will be stored here
+const userDataPath = (electron.app || electron.remote.app).getPath("userData");
+const filePath = path.join(userDataPath, "montor.json");
+
+// If the file to keep track of the datetimes does not exist, initialize it
+if (!fs.existsSync(filePath)) {
+  console.log("File does not exist. Initializing...");
+  const today = moment().format("YYYY-MM-DD");
+  const obj = {};
+  obj[today] = "00:00";
+  fs.writeFileSync(filePath, JSON.stringify(obj));
+}
+
+// Stopwatch
 let minutes = 0;
 let hours = 0;
 
-const lastStopWatch = localStorage.getItem("stopwatch");
-if (lastStopWatch) {
-  const split = lastStopWatch.split(":");
-  seconds = parseInt(split[2]);
-  minutes = parseInt(split[1]);
-  hours = parseInt(split[0]);
+function stopwatch() {
+  console.log("minutes", minutes);
+  minutes++;
+  if (minutes / 60 === 1) {
+    minutes = 0;
+    hours++;
+  }
 }
 
-let displaySeconds = 0;
-let displayMinutes = 0;
-let displayHours = 0;
+function readFile() {
+  const data = fs.readFileSync(filePath);
+  return JSON.parse(data);
+}
 
-function stopwatch() {
-  seconds++;
+function updateFile(dataJson) {
+  fs.writeFileSync(filePath, JSON.stringify(dataJson));
+}
 
-  if (seconds / 60 === 1) {
-    seconds = 0;
-    minutes++;
+function getCurrentDay() {
+  return moment().format("YYYY-MM-DD");
+}
 
-    if (minutes / 60 === 1) {
-      minutes = 0;
-      hours++;
-    }
-  }
+// Main
+function main(byInterval) {
+  todayEle.innerText = moment().format("dddd, MMMM Do, YYYY");
 
-  if (seconds < 10) {
-    displaySeconds = "0" + seconds.toString();
+  // Get contents from file
+  const dataJson = readFile();
+  const today = getCurrentDay();
+
+  // Get last active time for current day
+  const lastActiveTime = dataJson[today];
+  // If it exists continue the stopwatch from the last active time, otherwise start fresh
+  if (lastActiveTime) {
+    const momentTime = moment(lastActiveTime, "HH:mm");
+    minutes = momentTime.minute();
+    hours = momentTime.hour();
   } else {
-    displaySeconds = seconds;
+    minutes = 0;
+    hours = 0;
   }
-
-  if (minutes < 10) {
-    displayMinutes = "0" + minutes.toString();
-  } else {
-    displayMinutes = minutes;
-  }
-
-  if (hours < 10) {
-    displayHours = "0" + hours.toString();
-  } else {
-    displayHours = hours;
-  }
-
-  const res = displayHours + ":" + displayMinutes + ":" + displaySeconds;
-  // stopWatchEle.innerText = res;
+  // Start stopwatch only if it was called by the interval (i.e. don't start the first time it runs)
+  if (byInterval) stopwatch();
+  // Update Text
   hoursEle.innerText = hours;
   minutesEle.innerText = minutes;
-  localStorage.setItem("stopwatch", res);
+  // Update Chart
+  doughnutChart.data.datasets[0].data[0] = minutes;
+  doughnutChart.data.datasets[0].data[1] = 1440 - minutes;
+  doughnutChart.update();
+  // Update File
+  dataJson[today] = moment(`${hours}:${minutes}`, "H:m").format("HH:mm");
+  updateFile(dataJson);
 }
 
-function resume(isActive) {
-  let interval;
-  if (isActive) {
-    interval = setInterval(stopwatch, 1000);
-  } else {
-    clearInterval(interval);
-  }
-}
-
-ipcRenderer.on("isActive", (e, _isActive) => {
-  resume(_isActive);
-});
-// Stopwatch //
-
-// Chart //
+// Chart
 let doughnutChart = new Chart(ctx, {
   type: "doughnut",
   data: {
@@ -113,15 +118,32 @@ let doughnutChart = new Chart(ctx, {
   },
 });
 
-function updateChart() {
-  let chartInterval;
-  chartInterval = setInterval(() => {
-    doughnutChart.data.datasets[0].data[0] = minutes;
-    doughnutChart.data.datasets[0].data[1] = 1440 - minutes;
-    doughnutChart.update();
-  }, 60000);
+// Get Historical Content for Second Page
+function getHistorical() {
+  const dataJson = readFile();
+  let boxes = "";
+  for (const [key, value] of Object.entries(dataJson)) {
+    const momentObj = moment(value, "HH:mm:ss");
+    const minutes = momentObj.minute();
+    const hours = momentObj.hour();
+    const box = `<div class="box"> <p class="box-title">${key}</p> <p class="box-subtitle">${hours} hours & ${minutes} minutes</p> </div>`;
+    boxes += box;
+  }
+  boxesEle.innerHTML = boxes;
 }
-// Chart //
 
-resume(true);
-updateChart();
+let interval;
+let ms = 60000;
+
+// Listen for Power Events
+ipcRenderer.on("isActive", (e, _isActive) => {
+  clearInterval(interval);
+  if (_isActive) {
+    interval = setInterval(main, ms, true);
+  }
+});
+
+// Startup
+main(false); // First time run
+interval = setInterval(main, ms, true); // First time interval
+getHistorical(); // Second page

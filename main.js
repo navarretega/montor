@@ -6,11 +6,11 @@ let mainWindow;
 function powerEvents() {
   powerMonitor.on("lock-screen", () => {
     console.log("The system is about to lock the screen");
-    win.webContents.send("isActive", false);
+    mainWindow.webContents.send("isActive", false);
   });
   powerMonitor.on("unlock-screen", () => {
     console.log("The systems screen is unlocked");
-    win.webContents.send("isActive", true);
+    mainWindow.webContents.send("isActive", true);
   });
 }
 
@@ -28,6 +28,8 @@ function createWindow() {
   });
 
   mainWindow.loadFile(`${__dirname}/app/index.html`);
+
+  mainWindow.webContents.openDevTools();
 
   mainWindow.on("closed", () => {
     mainWindow = null;

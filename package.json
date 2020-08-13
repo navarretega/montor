@@ -20,6 +20,7 @@
     "appId": "brisai.driync"
   },
   "dependencies": {
-    "chart.js": "^2.9.3"
+    "chart.js": "^2.9.3",
+    "moment": "^2.27.0"
   }
 }

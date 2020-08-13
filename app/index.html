@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline'" />
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline'" />
+
     <link rel="stylesheet" href="css/all.min.css" />
     <link rel="stylesheet" href="css/simplebar.css" />
     <link rel="stylesheet" href="css/titlebar.css" />
@@ -76,7 +77,7 @@
 
     <div id="main">
       <section id="section1" class="tabcontent active">
-        <h3 class="today">Tuesday, August 4, 2020</h3>
+        <h3 id="today"></h3>
         <h5 class="current">You've been active for <span id="hours">0</span> hours and <span id="minutes">0</span> minutes.</h5>
         <!-- <h5>Your current active time - <span id="stopwatch">00:00:00</span></h5> -->
         <canvas id="active-chart" width="390" height="390"></canvas>
@@ -86,76 +87,7 @@
       <section id="section2" class="tabcontent">
         <i id="section2-btn" class="back-btn fas fa-arrow-left"></i>
         <h3 class="s2-title">Your historical activity</h3>
-        <div class="container">
-          <div class="box">
-            <p class="box-title">08/06/2020</p>
-            <p class="box-subtitle">7 hours & 30 minutes</p>
-          </div>
-          <div class="box">
-            <p class="box-title">08/06/2020</p>
-            <p class="box-subtitle">7 hours & 30 minutes</p>
-          </div>
-          <div class="box">
-            <p class="box-title">08/06/2020</p>
-            <p class="box-subtitle">7 hours & 30 minutes</p>
-          </div>
-          <div class="box">
-            <p class="box-title">08/06/2020</p>
-            <p class="box-subtitle">7 hours & 30 minutes</p>
-          </div>
-          <div class="box">
-            <p class="box-title">08/06/2020</p>
-            <p class="box-subtitle">7 hours & 30 minutes</p>
-          </div>
-          <div class="box">
-            <p class="box-title">08/06/2020</p>
-            <p class="box-subtitle">7 hours & 30 minutes</p>
-          </div>
-          <div class="box">
-            <p class="box-title">08/06/2020</p>
-            <p class="box-subtitle">7 hours & 30 minutes</p>
-          </div>
-          <div class="box">
-            <p class="box-title">08/06/2020</p>
-            <p class="box-subtitle">7 hours & 30 minutes</p>
-          </div>
-          <div class="box">
-            <p class="box-title">08/06/2020</p>
-            <p class="box-subtitle">7 hours & 30 minutes</p>
-          </div>
-          <div class="box">
-            <p class="box-title">08/06/2020</p>
-            <p class="box-subtitle">7 hours & 30 minutes</p>
-          </div>
-          <div class="box">
-            <p class="box-title">08/06/2020</p>
-            <p class="box-subtitle">7 hours & 30 minutes</p>
-          </div>
-          <div class="box">
-            <p class="box-title">08/06/2020</p>
-            <p class="box-subtitle">7 hours & 30 minutes</p>
-          </div>
-          <div class="box">
-            <p class="box-title">08/06/2020</p>
-            <p class="box-subtitle">7 hours & 30 minutes</p>
-          </div>
-          <div class="box">
-            <p class="box-title">08/06/2020</p>
-            <p class="box-subtitle">7 hours & 30 minutes</p>
-          </div>
-          <div class="box">
-            <p class="box-title">08/06/2020</p>
-            <p class="box-subtitle">7 hours & 30 minutes</p>
-          </div>
-          <div class="box">
-            <p class="box-title">08/06/2020</p>
-            <p class="box-subtitle">7 hours & 30 minutes</p>
-          </div>
-          <div class="box">
-            <p class="box-title">08/06/2020</p>
-            <p class="box-subtitle">7 hours & 30 minutes</p>
-          </div>
-        </div>
+        <div id="boxes" class="container"></div>
       </section>
     </div>
 
