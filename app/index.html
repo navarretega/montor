@@ -78,9 +78,20 @@
     <div id="main">
       <section id="section1" class="tabcontent active">
         <h3 id="today"></h3>
-        <h5 class="current">You've been active for <span id="hours">0</span> hours and <span id="minutes">0</span> minutes.</h5>
+
+        <div class="stats">
+          <div class="stat">
+            <h5 class="label">Total Active Time</h5>
+            <h4 class="val"><span id="hours">0</span> hours & <span id="minutes">0</span> minutes</h4>
+          </div>
+          <div class="stat">
+            <h5 class="label">Current Active Time</h5>
+            <h4 class="val"><span id="c-hours">0</span> hours & <span id="c-minutes">0</span> minutes</h4>
+          </div>
+        </div>
+
         <!-- <h5>Your current active time - <span id="stopwatch">00:00:00</span></h5> -->
-        <canvas id="active-chart" width="390" height="390"></canvas>
+        <canvas id="active-chart" width="350" height="350"></canvas>
         <button id="section1-btn" class="btn"><i class="fas fa-calendar-alt"></i></button>
       </section>
 

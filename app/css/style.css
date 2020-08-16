@@ -32,10 +32,6 @@ p {
   color: #5f6c7b;
 }
 
-h3 {
-  font-size: 22px;
-}
-
 #window-title {
   font-size: 16px;
 }
@@ -51,7 +47,7 @@ h3 {
 
 canvas {
   margin: 0 auto;
-  margin-top: 30px;
+  margin-top: 25px;
 }
 
 .btn {
@@ -125,4 +121,29 @@ canvas {
   font-family: "Poppins Medium", sans-serif;
   font-size: 16px;
   color: #5f6c7b;
+}
+
+.stats {
+  display: grid;
+  height: 70px;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #e2e8f0;
+  border-radius: 10px;
+  padding-left: 20px;
+}
+
+.label {
+  font-size: 10px;
+}
+
+.val {
+  font-size: 14px;
 }

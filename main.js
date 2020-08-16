@@ -1,5 +1,7 @@
 const { app, BrowserWindow, powerMonitor } = require("electron");
 
+app.setAppUserModelId("brisai.montor");
+
 let mainWindow;
 
 // PowerMonitor Events

@@ -12,6 +12,8 @@ const section2Btn = document.getElementById("section2-btn");
 const todayEle = document.getElementById("today");
 const hoursEle = document.getElementById("hours");
 const minutesEle = document.getElementById("minutes");
+const currentHoursEle = document.getElementById("c-hours");
+const currentMinutesEle = document.getElementById("c-minutes");
 const boxesEle = document.getElementById("boxes");
 const ctx = document.getElementById("active-chart");
 
@@ -35,7 +37,7 @@ const filePath = path.join(userDataPath, "montor.json");
 
 // If the file to keep track of the datetimes does not exist, initialize it
 if (!fs.existsSync(filePath)) {
-  console.log("File does not exist. Initializing...");
+  // console.log("File does not exist. Initializing...");
   const today = moment().format("YYYY-MM-DD");
   const obj = {};
   obj[today] = "00:00";
@@ -47,11 +49,21 @@ let minutes = 0;
 let hours = 0;
 
 function stopwatch() {
-  console.log("minutes", minutes);
   minutes++;
   if (minutes / 60 === 1) {
     minutes = 0;
     hours++;
+  }
+}
+
+let currentMinutes = 0;
+let currentHours = 0;
+
+function currentStopwatch() {
+  currentMinutes++;
+  if (currentMinutes / 60 === 1) {
+    currentMinutes = 0;
+    currentHours++;
   }
 }
 
@@ -66,6 +78,38 @@ function updateFile(dataJson) {
 
 function getCurrentDay() {
   return moment().format("YYYY-MM-DD");
+}
+
+// Current Active Time
+function current(_isActive) {
+  if (_isActive) {
+    currentStopwatch();
+  } else {
+    currentMinutes = 0;
+    currentHours = 0;
+  }
+  currentHoursEle.innerText = currentHours;
+  currentMinutesEle.innerText = currentMinutes;
+  // Check if we need to send a notification
+  const currentTime = currentHours * 60 + currentMinutes;
+  const lastDateNotification = getLastDateNotification();
+  const currentDate = moment();
+  if (currentTime >= 60) {
+    if (!lastDateNotification) {
+      notify("Take a break!", `You've been active non-stop for ${currentTime} minutes.`);
+      setLastDateNotification(currentDate.format());
+    } else {
+      const diff = currentDate.diff(lastDateNotification, "minutes");
+      if (diff >= 30) {
+        notify("Take a break!", `You've been active non-stop for ${currentTime} minutes.`);
+        setLastDateNotification(currentDate.format());
+      } else {
+        // console.log("Waiting at least X minutes before sending another notification", diff);
+      }
+    }
+  } else {
+    // console.log("Haven't reached threshold. Avoiding sending notification");
+  }
 }
 
 // Main
@@ -93,23 +137,34 @@ function main(byInterval) {
   hoursEle.innerText = hours;
   minutesEle.innerText = minutes;
   // Update Chart
-  doughnutChart.data.datasets[0].data[0] = minutes;
-  doughnutChart.data.datasets[0].data[1] = 1440 - minutes;
+  const updMinutes = hours * 60 + minutes;
+  doughnutChart.data.datasets[0].data[0] = updMinutes;
+  doughnutChart.data.datasets[0].data[1] = 1440 - updMinutes;
   doughnutChart.update();
   // Update File
-  dataJson[today] = moment(`${hours}:${minutes}`, "H:m").format("HH:mm");
+  const currentTime = moment(`${hours}:${minutes}`, "H:m");
+  dataJson[today] = currentTime.format("HH:mm");
   updateFile(dataJson);
 }
 
+// Send desktops notifications
+function notify(title, body) {
+  new Notification(title, {
+    body: body,
+    icon: `${__dirname}/assets/logo.png`,
+  });
+}
+
 // Chart
+const updMinutes = hours * 60 + minutes;
 let doughnutChart = new Chart(ctx, {
   type: "doughnut",
   data: {
-    labels: ["Active (min)", "Inactive (min)"],
+    labels: ["Total Active (m)", "Total Inactive (m)"],
     datasets: [
       {
         backgroundColor: ["#ef4565", "#90b4ce"],
-        data: [minutes, 1440 - minutes],
+        data: [updMinutes, 1440 - updMinutes],
       },
     ],
   },
@@ -117,6 +172,19 @@ let doughnutChart = new Chart(ctx, {
     responsive: false,
   },
 });
+
+// Get Last Recorded Notification from Local Storage
+function getLastDateNotification() {
+  let lastNotification = localStorage.getItem("last-notification");
+  if (lastNotification) {
+    return moment(lastNotification);
+  }
+}
+
+// Set Last Recorded Notification on Local Storage
+function setLastDateNotification(val) {
+  localStorage.setItem("last-notification", val);
+}
 
 // Get Historical Content for Second Page
 function getHistorical() {
@@ -133,17 +201,24 @@ function getHistorical() {
 }
 
 let interval;
+let currentInterval;
 let ms = 60000;
 
 // Listen for Power Events
 ipcRenderer.on("isActive", (e, _isActive) => {
   clearInterval(interval);
+  clearInterval(currentInterval);
+
   if (_isActive) {
     interval = setInterval(main, ms, true);
+    currentInterval = setInterval(current, ms, true);
+  } else {
+    current(false);
   }
 });
 
 // Startup
 main(false); // First time run
 interval = setInterval(main, ms, true); // First time interval
+currentInterval = setInterval(current, ms, true); // First time current interval
 getHistorical(); // Second page
