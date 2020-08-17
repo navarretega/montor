@@ -1,8 +1,10 @@
 const { app, BrowserWindow, powerMonitor } = require("electron");
+const AppTray = require("./AppTray");
 
 app.setAppUserModelId("brisai.montor");
 
 let mainWindow;
+let tray;
 
 // PowerMonitor Events
 function powerEvents() {
@@ -31,7 +33,19 @@ function createWindow() {
 
   mainWindow.loadFile(`${__dirname}/app/index.html`);
 
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
+
+  mainWindow.on("close", (e) => {
+    if (!app.isQuitting) {
+      e.preventDefault();
+      mainWindow.hide();
+    }
+    return true;
+  });
+
+  // Tray
+  const icon = `${__dirname}/app/assets/tray_logo.png`;
+  tray = new AppTray(icon, mainWindow);
 
   mainWindow.on("closed", () => {
     mainWindow = null;
